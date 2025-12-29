@@ -1,0 +1,38 @@
+name: infinite_jukebox
+description: A new Flutter project for infinite loop generation.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # UI
+  cupertino_icons: ^1.0.2
+  file_picker: ^6.1.1
+  permission_handler: ^11.0.1
+
+  # Audio Playback
+  just_audio: ^0.9.36
+  just_audio_background: ^0.0.1-beta.11
+  audio_session: ^0.1.18
+
+  # Audio Processing
+  ffmpeg_kit_flutter_audio: ^6.0.3
+  fftea: ^1.4.0
+  scidart: ^0.0.2+4  # Useful for math/signal processing
+
+  # Utils
+  path_provider: ^2.1.1
+  logging: ^1.2.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+flutter:
+  uses-material-design: true
