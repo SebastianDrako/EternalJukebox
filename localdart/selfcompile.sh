@@ -41,7 +41,7 @@ PROJECT_ROOT="/project"
 echo "[Guest] Updating system..."
 apt-get update
 # Dependencies for Flutter and Android SDK
-apt-get install -y git wget curl unzip xz-utils openjdk-17-jdk lib32stdc++6
+apt-get install -y git wget curl unzip xz-utils openjdk-17-jdk
 
 # Setup directories
 mkdir -p "$SDK_ROOT"
