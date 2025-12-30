@@ -75,7 +75,8 @@ class Analyzer {
 
     // FFT setup
     const int fftSize = 1024;
-    final stft = STFT(fftSize, Window.hanning(fftSize));
+    final fft = FFT(fftSize);
+    final window = Window.hanning(fftSize);
 
     for (int i = 0; i < beatOnsets.length - 1; i++) {
       int startSample = beatOnsets[i];
@@ -89,9 +90,14 @@ class Analyzer {
       if (windowStart < 0) windowStart = 0;
       if (windowStart + fftSize > pcmData.length) windowStart = pcmData.length - fftSize;
 
+      // Get chunk and normalize
       List<double> chunk = pcmData.sublist(windowStart, windowStart + fftSize).map((e) => e.toDouble() / 32768.0).toList();
 
-      final spectrum = stft.run(chunk).magnitudes();
+      // Apply window
+      final windowedChunk = window.apply(chunk);
+
+      // Compute FFT
+      final spectrum = fft.realFft(windowedChunk).magnitudes();
 
       // MFCC (Simplified 12 coefficients)
       List<double> timbre = _computeMFCC(spectrum, sampleRate, 12);
