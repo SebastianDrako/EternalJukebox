@@ -63,6 +63,15 @@ fi
 export ANDROID_HOME="$ANDROID_HOME"
 export PATH="$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$PATH"
 
+# 1.1 Install Platform Tools and Build Tools
+# Flutter requires these to be present.
+if [ ! -d "$ANDROID_HOME/platform-tools" ]; then
+    echo "[Guest] Installing Android Platform Tools & Build Tools..."
+    yes | sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0"
+else
+    echo "[Guest] Android Platform Tools already installed."
+fi
+
 # 2. Install Flutter
 if [ ! -d "$FLUTTER_ROOT" ]; then
     echo "[Guest] Cloning Flutter SDK..."
@@ -81,8 +90,14 @@ git config --global --add safe.directory "$PROJECT_ROOT"
 # Pre-download Flutter artifacts
 flutter precache
 
+# Explicitly config Android SDK path
+echo "[Guest] Configuring Android SDK path..."
+flutter config --android-sdk "$ANDROID_HOME"
+
 # Accept Licenses
 echo "[Guest] Accepting Android Licenses..."
+# Use sdkmanager directly first, as flutter might fail if it doesn't see SDK yet
+yes | sdkmanager --licenses || true
 yes | flutter doctor --android-licenses || true
 
 # Check status
@@ -91,6 +106,10 @@ flutter doctor
 # 4. Build
 echo "[Guest] Building APK..."
 cd "$PROJECT_ROOT"
+
+# Ensure project scaffolding exists (generates local.properties, icons, etc.)
+flutter create --platforms android .
+
 flutter pub get
 
 # Note: We build for arm64-v8a usually for modern phones.

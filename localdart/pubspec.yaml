@@ -23,7 +23,6 @@ dependencies:
   # Audio Processing
   ffmpeg_kit_flutter_audio: ^6.0.3
   fftea: ^1.4.0
-  scidart: ^0.0.2+4  # Useful for math/signal processing
 
   # Utils
   path_provider: ^2.1.1
